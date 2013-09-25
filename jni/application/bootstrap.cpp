@@ -6,6 +6,8 @@
 
 #include <zenilib.h>
 #include <player.h>
+#include <map.h>
+#include <orb.h>
 
 #if defined(_DEBUG) && defined(_WINDOWS)
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -21,19 +23,21 @@ class Play_State : public Gamestate_Base {
 
 public:
   Play_State()
-	  : m_time_passed(0.0f)
+	  : m_time_passed(0.0f), map("1"), orb(Orb::RED, Point2f(-20.0f, 45.0f))
   {
     set_pausable(true);
   }
 
 private:
   void perform_logic() {
-	proj = Projector2D(make_pair(Point2f(0.0f, 0.0f), Point2f(960.0f, 540.0f)), get_Video().get_viewport());
+	
 	const float time_passed = chrono.seconds();
     const float time_step = time_passed - m_time_passed;
     m_time_passed = time_passed;
 
-	player.Move(time_step);
+	player.Update(time_step);
+	orb.Update(time_step);
+	map.Collision(player);
   }
   
   void on_key(const SDL_KeyboardEvent &event) {
@@ -45,10 +49,14 @@ private:
 		  case SDLK_RIGHT:
 			  player.move_right = (event.type == SDL_KEYDOWN);
 			  break;
+		  case SDLK_UP:
+			  player.jump = (event.type == SDL_KEYDOWN);
+			  break;
 		  default:
 			  Gamestate_Base::on_key(event);
 	  }
   }
+
   void on_push() {
     //get_Window().mouse_grab(true);
     get_Window().mouse_hide(true);
@@ -65,13 +73,16 @@ private:
 
   void render() {
 	  Video &vr = get_Video();
-	  vr.set_2d(make_pair(Point2f(0,0),Point2f(960.0f/2, 540.0f/2)),true);
-
+	  vr.set_2d(make_pair(Point2f(0,0),Point2f(854.0f, 480.0f)),true);
+	  map.RenderMap(vr);
 	  player.Render();
+	  orb.Render();
   }
   
-  Projector2D proj;
+
   Player player;
+  Orb orb;
+  Map map;
   Chronometer<Time> chrono;
   float m_time_passed;
 };

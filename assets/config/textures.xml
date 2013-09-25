@@ -42,6 +42,26 @@ The following things are unsupported:
     <filepath>textures/player.png</filepath>
     <tile>0</tile>
   </player>
+  <floor_tile1>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/floor_tile1.png</filepath>
+    <tile>0</tile>
+  </floor_tile1>
+  <red>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/red_orb.png</filepath>
+    <tile>0</tile>
+  </red>
+  <green>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/green_orb.png</filepath>
+    <tile>0</tile>
+  </green>
+  <blue>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/blue_orb.png</filepath>
+    <tile>0</tile>
+  </blue>
   <!--
   <one>
     <is_sprite>0</is_sprite>
