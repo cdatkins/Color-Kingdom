@@ -8,14 +8,17 @@ public:
 	Rect *current, *previous;
 	enum Color { RED, BLUE, GREEN, PURPLE, YELLOW, CYAN, BLACK };
 	enum State { START, ONSCREEN, OFFSCREEN, CAPTURED };
+	enum Direction { UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT };
 	Color color;
 	State state;
+	Direction direction;
 	Orb(Color color_, Zeni::Point2f pos_);
 	Orb(Color color_); // Used for the created orbs that the player makes
 	~Orb();
 
 	void Move(float time_step);
 	void Update(float time_step);
+	void OnCollision(Rect::Side s);
 	void Render();
 	Zeni::String ColorToString(Color color);
 

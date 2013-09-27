@@ -3,7 +3,7 @@
 Player::Player()
 	:position(427.0f,240.0f), velocity(0.0f,0.0f), size(32.0f,32.0f), speed(200.0f),
 	jump_speed(550.0f), move_left(false), move_right(false), activate_gravity(true),
-	gravity(700.0f), jump(false)
+	gravity(700.0f), jump(false), orbcontainer(position)
 {
 	current = new Rect(position.x,position.y,size.i,size.j);
 	previous = new Rect(position.x,position.y,size.i,size.j);
@@ -16,6 +16,7 @@ Player::~Player() {
 
 void Player::Render() {
 	Zeni::render_image("player",position, position + size);
+	orbcontainer.Render();
 }
 
 void Player::Move(float time_step) {
@@ -39,7 +40,7 @@ void Player::Move(float time_step) {
 		velocity.y += gravity * time_step; 
 	}
 	else
-		velocity.y =0;
+		velocity.y = 0;
 
 	position.x += velocity.x * time_step;
 	position.y += velocity.y * time_step;
@@ -53,6 +54,7 @@ void Player::Move(float time_step) {
 void Player::Update(float time_step) {
 	previous->SetPosition(current->GetX(), current->GetY());
 	Move(time_step);
+	orbcontainer.Update(position);
 	current->SetPosition(position.x,position.y);
 }
 

@@ -32,8 +32,9 @@ void Map::LoadMap(Zeni::String level) {
 			if(tile_number > 0) { //0 means no tile located there
 				Tile *new_tile = new Tile();
 				new_tile->position = Zeni::Point2f((854/13) * j, (480/8) * i);
-				//std::cout << "Position: " << new_tile->position.x << " " << new_tile->position.y << std::endl;
+				new_tile->id = Zeni::Point2f(i,j);
 				new_tile->tile_type = tile_type;
+				new_tile->contain_entity = false;
 				new_tile->size = Zeni::Vector2f(854/13, 480/8);
 				new_tile->rect = new Rect(new_tile->position.x,new_tile->position.y,new_tile->size.i,new_tile->size.j);
 				tiles.push_back(new_tile);
@@ -63,17 +64,18 @@ void Map::RenderMap(Zeni::Video &video) {
 
 void Map::Collision(Player &player) {
 	
-	player.activate_gravity = true;
+	//player.activate_gravity = true;
 	for(int i = 0; i < tiles.size(); i++) {
 		
 		if(player.current->Intersects(*tiles[i]->rect)) {
 			Rect tile_rect = *tiles[i]->rect;
-			
+			player.tile_id = tiles[i]->id;
 
 			if(player.current->GetBottom() >= tile_rect.GetTop() 
 				&& player.previous->GetBottom() <= tile_rect.GetTop()) { //Player intersected from the top of the tile
 					player.SetPosition(player.GetPosition().x,tile_rect.GetTop() - player.GetSize().j);
 					player.activate_gravity = false;
+					tiles[i]->contain_entity = true;
 			}
 			else if(player.current->GetTop() <= tile_rect.GetBottom() 
 				&& player.previous->GetTop() >= tile_rect.GetBottom()) { //Player intersected from the bottom of the tile
@@ -92,6 +94,46 @@ void Map::Collision(Player &player) {
 			}
 			
 		}
+
+		if(tiles[i]->contain_entity && (tiles[i]->id.x == player.tile_id.x) && (tiles[i]->id.y == player.tile_id.y)) {
+			
+			if(player.current->GetRight() < tiles[i]->rect->GetLeft() 
+				|| player.current->GetLeft() > tiles[i]->rect->GetRight()) {
+					tiles[i]->contain_entity = false;
+					player.activate_gravity = true;
+			}
+		}
 		
+	}
+
+	
+}
+
+void Map::Collision(Orb &orb) {
+
+	for(int i = 0; i < tiles.size(); i++) {
+		
+		if(orb.current->Intersects(*tiles[i]->rect)) {
+			
+			Rect tile_rect = *tiles[i]->rect;
+			
+			if(orb.current->GetBottom() >= tile_rect.GetTop() 
+				&& orb.previous->GetBottom() <= tile_rect.GetTop()) { //Orb intersected from the top of the tile
+					orb.OnCollision(Rect::TOP);
+			}
+			else if(orb.current->GetTop() <= tile_rect.GetBottom() 
+				&& orb.previous->GetTop() >= tile_rect.GetBottom()) { //Orb intersected from the bottom of the tile
+					orb.OnCollision(Rect::BOTTOM);
+			}
+			else if(orb.current->GetRight() >= tile_rect.GetLeft()
+				&& orb.previous->GetRight() <= tile_rect.GetLeft()) { //Orb intersected from the left
+					orb.OnCollision(Rect::LEFT);
+			}
+			else if(orb.current->GetLeft() <= tile_rect.GetRight()
+				&& orb.previous->GetLeft() >= tile_rect.GetRight()) { //Orb intersected from the right
+					orb.OnCollision(Rect::RIGHT);	
+			}
+			
+		}
 	}
 }
