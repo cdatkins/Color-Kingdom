@@ -80,6 +80,17 @@ private:
 	map.Collision(*black3);
 	//map.Collision(*black4);
 	
+	player.Collision(red1);
+	player.Collision(red2);
+	player.Collision(red3);
+	player.Collision(green1);
+	player.Collision(green2);
+	player.Collision(blue1);
+	player.Collision(black1);
+	player.Collision(black2);
+	player.Collision(black3);
+
+
 	player.Update(time_step);
 	
 	red1->Update(time_step);
@@ -110,7 +121,7 @@ private:
 		  case SDLK_UP:
 			  player.jump = (event.type == SDL_KEYDOWN);
 			  break;
-		  case SDLK_DOWN:
+		  case SDLK_SPACE:
 			  player.release_orb = (event.type == SDL_KEYUP);
 			  break;
 		  default:

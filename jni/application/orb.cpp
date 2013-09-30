@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 Orb::Orb(Color color_, Zeni::Point2f pos_) 
-	: velocity(0.0f,0.0f), size(16.0f,16.0f), state(START)
+	: velocity(0.0f,0.0f), size(16.0f,16.0f), state(START), active(true), speed(150.0f)
 {
 	color = color_;
 	position = pos_;
@@ -24,6 +24,7 @@ Orb::Orb(Color color_, Zeni::Point2f pos_)
 			break;
 		case BLACK:
 			stop_time = 15.0f;
+			speed = 85.0f;
 			break;
 	}
 
@@ -67,44 +68,46 @@ Orb::~Orb() {
 
 void Orb::Move(float time_step) {
 	
-	switch(direction)
-	{
-		case UPLEFT:
-			velocity.x = -100.0f;
-			velocity.y = -100.0f;
-			break;
-		case UPRIGHT:
-			velocity.x = 100.0f;
-			velocity.y = -100.0f;
-			break;
-		case DOWNLEFT:
-			velocity.x = -100.0f;
-			velocity.y = 100.0f;
-			break;
-		case DOWNRIGHT:
-			velocity.x = 100.0f;
-			velocity.y = 100.0f;
-			break;
-	}
+	if(active) {
+		switch(direction)
+		{
+			case UPLEFT:
+				velocity.x = -speed;
+				velocity.y = -speed;
+				break;
+			case UPRIGHT:
+				velocity.x = speed;
+				velocity.y = -speed;
+				break;
+			case DOWNLEFT:
+				velocity.x = -speed;
+				velocity.y = speed;
+				break;
+			case DOWNRIGHT:
+				velocity.x = speed;
+				velocity.y = speed;
+				break;
+		}
 
-	position.x += velocity.x * time_step;
-	position.y += velocity.y * time_step; // + 150*sin(position.x * 2 * 3.1458/180)) * time_step;
+		position.x += velocity.x * time_step;
+		position.y += velocity.y * time_step; // + 150*sin(position.x * 2 * 3.1458/180)) * time_step;
 
-	if(state == ONSCREEN) {
+		if(state == ONSCREEN) {
 		
-		if(position.x <= 0) {
-			OnCollision(Rect::RIGHT);	
-		}
-		else if(position.x >= 854 - size.i) {
-			OnCollision(Rect::LEFT);
-		}
-		else if(position.y <= 0) {
-			OnCollision(Rect::BOTTOM);
-		}
-		else if(position.y >= 480 - size.j) {
-			OnCollision(Rect::TOP);
-		}
+			if(position.x <= 0) {
+				OnCollision(Rect::RIGHT);	
+			}
+			else if(position.x >= 854 - size.i) {
+				OnCollision(Rect::LEFT);
+			}
+			else if(position.y <= 0) {
+				OnCollision(Rect::BOTTOM);
+			}
+			else if(position.y >= 480 - size.j) {
+				OnCollision(Rect::TOP);
+			}
 
+		}
 	}
 }
 
@@ -120,7 +123,6 @@ void Orb::Update(float time_step) {
 		&& position.y > 0) { //Setup the orb for onscreen interactions
 			state = ONSCREEN; 
 			screen_time.start(); 
-			active = true;
 	}
 
 	if(state == ONSCREEN && screen_time.seconds() >= stop_time) { //Tells the orb to go off screen

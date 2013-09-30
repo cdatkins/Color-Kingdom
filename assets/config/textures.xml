@@ -42,11 +42,41 @@ The following things are unsupported:
     <filepath>textures/player.png</filepath>
     <tile>0</tile>
   </player>
-  <floor_tile1>
+  <floor_tile_1>
     <is_sprite>0</is_sprite>
-    <filepath>textures/floor_tile1.png</filepath>
+    <filepath>textures/floor_tile_1.png</filepath>
     <tile>0</tile>
-  </floor_tile1>
+  </floor_tile_1>
+  <floor_tile_r>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_red.png</filepath>
+    <tile>0</tile>
+  </floor_tile_r>
+  <floor_tile_R>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_red_top.png</filepath>
+    <tile>0</tile>
+  </floor_tile_R>
+  <floor_tile_g>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_green.png</filepath>
+    <tile>0</tile>
+  </floor_tile_g>
+  <floor_tile_G>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_green_top.png</filepath>
+    <tile>0</tile>
+  </floor_tile_G>
+  <floor_tile_b>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_blue.png</filepath>
+    <tile>0</tile>
+  </floor_tile_b>
+  <floor_tile_B>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/pipe_blue_top.png</filepath>
+    <tile>0</tile>
+  </floor_tile_B>
   <red>
     <is_sprite>0</is_sprite>
     <filepath>textures/red_orb.png</filepath>

@@ -7,11 +7,15 @@ OrbContainer::OrbContainer(Zeni::Point2f position_) {
 
 OrbContainer::~OrbContainer() {
 	
-	if(orbs.size() > 0) {
-		for(int i = 0; i < orbs.size(); i++) {
-			delete orbs[i];
-		}
-	}
+	//if(orbs.size() > 0) {
+		//for(int i = 0; i < orbs.size(); i++) {
+			//delete orbs[i];
+		//}
+	//}
+}
+
+int OrbContainer::GetSize() {
+	return orbs.size();
 }
 
 void OrbContainer::AddOrb(Orb * orb_) {
@@ -19,11 +23,23 @@ void OrbContainer::AddOrb(Orb * orb_) {
 	orbs.push_back(orb_);
 }
 
+Orb::Color OrbContainer::GetFrontColor() {
+	if(orbs.size() > 0) {
+	   return orbs.front()->color;
+	}
+	else 
+		return Orb::NONE;
+}
+
 Orb* OrbContainer::ReleaseOrb() {
 	
-	Orb * new_orb = orbs.front();
-	orbs.pop_front();
-	return new_orb;
+	if(orbs.size() > 0) {
+		Orb * new_orb = orbs.front();
+		orbs.pop_front();
+		return new_orb;
+	}
+	else 
+		return NULL;
 }
 
 void OrbContainer::Update(Zeni::Point2f position_) {

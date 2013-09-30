@@ -6,12 +6,13 @@
 class Orb {
 public:
 	Rect *current, *previous;
-	enum Color { RED, BLUE, GREEN, PURPLE, YELLOW, CYAN, BLACK };
+	enum Color { RED, BLUE, GREEN, PURPLE, YELLOW, CYAN, BLACK, NONE };
 	enum State { START, ONSCREEN, OFFSCREEN, CAPTURED };
 	enum Direction { UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT };
 	Color color;
 	State state;
 	Direction direction;
+	bool active;
 	Orb(Color color_, Zeni::Point2f pos_);
 	Orb(Color color_); // Used for the created orbs that the player makes
 	~Orb();
@@ -38,5 +39,5 @@ private:
 	Zeni::Vector2f size;
 	Zeni::Chronometer<Zeni::Time> screen_time; //used for the life_time of the orb
 	float stop_time; 
-	bool active;
+	float speed;
 };

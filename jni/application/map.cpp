@@ -28,8 +28,7 @@ void Map::LoadMap(Zeni::String level) {
 		for(int j = 0; j < 13; j++) {
 			char tile_type;
 			infile >> tile_type;
-			int tile_number = std::atoi(&tile_type);
-			if(tile_number > 0) { //0 means no tile located there
+			if(tile_type != '0') { //0 means no tile located there
 				Tile *new_tile = new Tile();
 				new_tile->position = Zeni::Point2f((854/13) * j, (480/8) * i);
 				new_tile->id = Zeni::Point2f(i,j);
@@ -37,6 +36,17 @@ void Map::LoadMap(Zeni::String level) {
 				new_tile->contain_entity = false;
 				new_tile->size = Zeni::Vector2f(854/13, 480/8);
 				new_tile->rect = new Rect(new_tile->position.x,new_tile->position.y,new_tile->size.i,new_tile->size.j);
+				if(tile_type == 'R') { //Used for the bucket tiles
+					new_tile->color = Orb::RED;
+				}
+				else if(tile_type == 'G') {
+					new_tile->color = Orb::GREEN;
+				}
+				else if(tile_type == 'B') {
+					new_tile->color = Orb::BLUE;
+				}
+				else 
+					new_tile->color = Orb::BLACK;
 				tiles.push_back(new_tile);
 			}
 		}
@@ -57,7 +67,7 @@ void Map::ClearMap() {
 void Map::RenderMap(Zeni::Video &video) {
 	//Testing with render_image but want to use the video and apply textures
 	for(int i = 0; i < tiles.size(); i++) {
-		Zeni::render_image("floor_tile"+ tiles[i]->tile_type, tiles[i]->position, 
+		Zeni::render_image("floor_tile_"+ tiles[i]->tile_type, tiles[i]->position, 
 			tiles[i]->position + tiles[i]->size);
 	}
 }
@@ -70,6 +80,7 @@ void Map::Collision(Player &player) {
 		if(player.current->Intersects(*tiles[i]->rect)) {
 			Rect tile_rect = *tiles[i]->rect;
 			player.tile_id = tiles[i]->id;
+			player.tile_color = tiles[i]->color;
 
 			if(player.current->GetBottom() >= tile_rect.GetTop() 
 				&& player.previous->GetBottom() <= tile_rect.GetTop()) { //Player intersected from the top of the tile
@@ -85,11 +96,13 @@ void Map::Collision(Player &player) {
 			else if(player.current->GetRight() >= tile_rect.GetLeft()
 				&& player.previous->GetRight() <= tile_rect.GetLeft()) { //Player intersected from the left
 					player.SetPosition(tile_rect.GetLeft()-player.GetSize().i, player.GetPosition().y);
+					player.SetVelocity(0.0f,player.GetVelocity().y);
 					player.move_right = false;
 			}
 			else if(player.current->GetLeft() <= tile_rect.GetRight()
 				&& player.previous->GetLeft() >= tile_rect.GetRight()) { //Player intersected from the right
 					player.SetPosition(tile_rect.GetRight(), player.GetPosition().y);
+					player.SetVelocity(0.0f,player.GetVelocity().y);
 					player.move_left = false;		
 			}
 			

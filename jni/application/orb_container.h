@@ -12,7 +12,9 @@ private:
 public:
 	OrbContainer(Zeni::Point2f position_);
 	~OrbContainer();
+	int GetSize();
 	void AddOrb(Orb * orb_);
+	Orb::Color GetFrontColor();
 	Orb* ReleaseOrb();
 	void Update(Zeni::Point2f position_);
 	void Render();

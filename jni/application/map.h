@@ -13,7 +13,7 @@ struct Tile {
 	Zeni::String tile_type;
 	Rect *rect;
 	bool contain_entity;
-	//State state;
+	Orb::Color color;
 };
 
 class Map {
