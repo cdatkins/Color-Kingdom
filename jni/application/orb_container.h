@@ -16,6 +16,7 @@ public:
 	void AddOrb(Orb * orb_);
 	Orb::Color GetFrontColor();
 	Orb* ReleaseOrb();
+	void ReleaseAll();
 	void Update(Zeni::Point2f position_);
 	void Render();
 

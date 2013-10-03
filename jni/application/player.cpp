@@ -1,10 +1,12 @@
 #include "player.h"
 
 Player::Player()
-	:position(427.0f,240.0f), velocity(0.0f,0.0f), size(32.0f,32.0f), speed(250.0f),
+	:position(427.0f,240.0f), velocity(0.0f,0.0f), size(32.0f,64.0f), speed(250.0f),
 	jump_speed(550.0f), move_left(false), move_right(false), activate_gravity(true),
-	gravity(700.0f), jump(false), orbcontainer(position), num_lives(3)
+	gravity(700.0f), jump(false), orbcontainer(position), num_lives(3), release_orb(false),
+	active(true), state(STAND), score(0)
 {
+	respawn_position = position;
 	current = new Rect(position.x,position.y,size.i,size.j);
 	previous = new Rect(position.x,position.y,size.i,size.j);
 }
@@ -15,8 +17,28 @@ Player::~Player() {
 }
 
 void Player::Render() {
-	Zeni::render_image("player",position, position + size);
-	orbcontainer.Render();
+	
+	if(active) {
+		switch (state) {
+		case STAND :
+			Zeni::render_image("player_stand", position, position + size);
+			break;
+		case LEFT :
+			Zeni::render_image("player", position, position + size, true);
+			break;
+		case RIGHT :
+			Zeni::render_image("player", position, position + size);
+			break;
+		case JUMPR :
+			Zeni::render_image("player_jump", position, position + size);
+			break;
+		case JUMPL :
+			Zeni::render_image("player_jump", position, position + size, true);
+			break;
+		}
+		orbcontainer.Render();
+		
+	}
 }
 
 void Player::Move(float time_step) {
@@ -26,19 +48,28 @@ void Player::Move(float time_step) {
 		velocity.y = -jump_speed;
 		activate_gravity = true;
 	}
-	else if(!jump) {
+	else if(!jump) { //allow player to short jump or jump higher when when button is held
 		if(velocity.y  < -225.0f) 
 			velocity.y = -225.0f;
 	}
 
 	if(move_left) {
 		velocity.x = -speed;
+		if(!activate_gravity)
+			state = LEFT;
+		else
+			state = JUMPL;
 	}
 	else if(move_right) {
 		velocity.x = speed;
+		if(!activate_gravity)
+			state = RIGHT;
+		else
+			state = JUMPR;
 	}
-	else if(!activate_gravity)
-		velocity.x = 0;
+	else if(!activate_gravity) {
+		velocity.x = 0;state = STAND;
+	}
 
 	if(activate_gravity) {
 		velocity.y += gravity * time_step; 
@@ -55,29 +86,81 @@ void Player::Move(float time_step) {
 		position.x = 854 - size.i;
 	if(position.y <= 0)
 		position.y = 0;
+	
 }
 
 void Player::Update(float time_step) {
-	previous->SetPosition(current->GetX(), current->GetY());
-	Move(time_step);
-	orbcontainer.Update(position);
-	if(release_orb && tile_color == orbcontainer.GetFrontColor()
-		&& !activate_gravity) {
-		orbcontainer.ReleaseOrb();
-		release_orb = false;
+	
+	if(active) {
+		previous->SetPosition(current->GetX(), current->GetY());
+		Move(time_step);
+		orbcontainer.Update(position);
+		
+		//Releasing the Orb into the buckets
+		if(release_orb && tile_color == orbcontainer.GetFrontColor()
+			&& !activate_gravity) {
+			
+			Orb* orb = orbcontainer.ReleaseOrb();
+			orb->active = false;
+			orb->state = Orb::OFFSCREEN;
+			
+			switch(orb->color) {
+			case Orb::BLUE:
+				score += 50;
+				break;
+			case Orb::GREEN:
+				score += 30;
+				break;
+			case Orb::RED:
+				score += 10;
+			}
+			release_orb = false;
+
+		}
+		else {
+			release_orb = false;
+		}
+		
+		//Stopping timer when player is colliable with orbs again after respawning
+		if(respawn_timer.is_running() && respawn_timer.seconds() >= 3) { 
+			respawn_timer.stop();
+			respawn_timer.reset();
+		}
+		current->SetPosition(position.x,position.y);
 	}
-	current->SetPosition(position.x,position.y);
+	else {
+		Respawn();
+	}
+}
+
+void Player::Respawn() {
+	
+	if(respawn_timer.seconds() >= 2  && num_lives > 0) {
+		position = respawn_position;
+		orbcontainer.Update(position);
+		current->SetPosition(position.x,position.y);
+		previous->SetPosition(current->GetX(), current->GetY());
+		velocity = Zeni::Point2f(0.0f,0.0f);
+		state = STAND;
+		activate_gravity = true;
+		active = true;
+		respawn_timer.reset();
+	}
 }
 
 void Player::Collision(Orb * orb) {
-
-	if(orb->active && current->Intersects(*orb->current)) {
-		if(orb->color != Orb::BLACK && orbcontainer.GetSize() <= 5) {
-			orb->state = Orb::CAPTURED;
-			orbcontainer.AddOrb(orb);
-		}
-		else if(orb->color == Orb::BLACK) {
-			//deduct a player life and reset the game
+	if(active && !respawn_timer.is_running()) {
+		if(orb->active && current->Intersects(*orb->current)) {
+			if(orb->color != Orb::BLACK && orbcontainer.GetSize() < 5) {
+				orb->state = Orb::CAPTURED;
+				orbcontainer.AddOrb(orb);
+			}
+			else if(orb->color == Orb::BLACK) {
+				num_lives --;
+				active = false;
+				orbcontainer.ReleaseAll();
+				respawn_timer.start();
+			}
 		}
 	}
 }

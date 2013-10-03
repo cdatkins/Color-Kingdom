@@ -13,6 +13,7 @@ public:
 	State state;
 	Direction direction;
 	bool active;
+	Orb();
 	Orb(Color color_, Zeni::Point2f pos_);
 	Orb(Color color_); // Used for the created orbs that the player makes
 	~Orb();

@@ -10,6 +10,8 @@
 #include <orb.h>
 #include <vector>
 #include <time.h>
+#include <orb_logic.h>
+
 
 #if defined(_DEBUG) && defined(_WINDOWS)
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -28,33 +30,16 @@ public:
 	  : m_time_passed(0.0f), map("1")
   {
     set_pausable(true);
-
-	red1 = new Orb(Orb::RED,Zeni::Point2f(-20.0f,45.0f));
-	red2 = new Orb(Orb::RED,Zeni::Point2f(40.0f,-20.0f));
-	red3 = new Orb(Orb::RED,Zeni::Point2f(870.0f,200.0f));
-
-	green1 = new Orb(Orb::GREEN,Zeni::Point2f(870.0f,360.0f));
-	green2 = new Orb(Orb::GREEN,Zeni::Point2f(240.0f,-20.0f));
-
-	blue1 = new Orb(Orb::BLUE,Zeni::Point2f(-20.0f,400.0f));
-
-	black1 = new Orb(Orb::BLACK,Zeni::Point2f(500.0f,-20.0f));
-	black2 = new Orb(Orb::BLACK,Zeni::Point2f(870.0f,45.0f));
-	black3 = new Orb(Orb::BLACK,Zeni::Point2f(-20.0f,80.0f));
-	//black4 = new Orb(Orb::BLACK,Zeni::Point2f(70.0f,-20.0f));
+	logic = new OrbLogic();
+	std::ifstream infile;
+	highscore = 0;
+	infile.open("../assets/highscore.txt");
+	if(infile.is_open()) 
+		infile >> highscore;
   }
 
   ~Play_State() {
-	  delete red1;
-	  delete red2;
-	  delete red3;
-	  delete green1;
-	  delete green2;
-	  delete blue1;
-	  delete black1;
-	  delete black2;
-	  delete black3;
-	  //delete black4;
+	 delete logic;
   }
 
 private:
@@ -64,49 +49,23 @@ private:
     const float time_step = time_passed - m_time_passed;
     m_time_passed = time_passed;
 	
+	if(player.num_lives <= 0) {
+		std::ofstream outfile;
+		outfile.open("../assets/highscore.txt");
+		if(outfile.is_open()) 
+			outfile << highscore;
+		get_Game().pop_state();
+	}
+	
+	logic->Collision(map);
+	logic->Collision(player);
 	map.Collision(player);
-	
-	map.Collision(*red1);
-	map.Collision(*red2);
-	map.Collision(*red3);
-
-	map.Collision(*green1);
-	map.Collision(*green2);
-
-	map.Collision(*blue1);
-
-	map.Collision(*black1);
-	map.Collision(*black2);
-	map.Collision(*black3);
-	//map.Collision(*black4);
-	
-	player.Collision(red1);
-	player.Collision(red2);
-	player.Collision(red3);
-	player.Collision(green1);
-	player.Collision(green2);
-	player.Collision(blue1);
-	player.Collision(black1);
-	player.Collision(black2);
-	player.Collision(black3);
-
-
 	player.Update(time_step);
+	logic->Update(time_step);
 	
-	red1->Update(time_step);
-	red2->Update(time_step);
-	red3->Update(time_step);
+	if(player.score > highscore) 
+		highscore = player.score;
 
-	green1->Update(time_step);
-	green2->Update(time_step);
-
-	blue1->Update(time_step);
-
-	black1->Update(time_step);
-	black2->Update(time_step);
-	black3->Update(time_step);
-	//black4->Update(time_step);
-	
   }
   
   void on_key(const SDL_KeyboardEvent &event) {
@@ -146,45 +105,28 @@ private:
   void render() {
 	  Video &vr = get_Video();
 	  vr.set_2d(make_pair(Point2f(0,0),Point2f(854.0f, 480.0f)),true);
+	  
 	  map.RenderMap(vr);
 	  player.Render();
-
-	  red1->Render();
-	  red2->Render();
-	  red3->Render();
-
-	  green1->Render();
-	  green2->Render();
-
-	  blue1->Render();
-
-	  black1->Render();
-	  black2->Render();
- 	  black3->Render();
-	  //black4->Render();
+	  logic->Render();
 	  
+	  for(int i = 1; i <= player.num_lives; i++) {
+			Zeni::Point2f point(854-i*32,0);
+			Zeni::render_image("life",point,point+Zeni::Vector2f(32,32));
+	  }
+	  int font_height = get_Fonts()["title"].get_text_height() + 10;
+
+	  get_Fonts()["title"].render_text("HighScore:  " + itoa(highscore),Point2f(0,0),get_Colors()["white"]);
+	  get_Fonts()["title"].render_text("Score:  " + itoa(player.score),Point2f(0,font_height),get_Colors()["white"]);
   }
   
 
-  Player player;
-  
-  Orb * red1;
-  Orb * red2;
-  Orb * red3;
-
-  Orb * green1;
-  Orb * green2;
-
-  Orb * blue1;
-
-  Orb * black1;
-  Orb * black2;
-  Orb * black3;
-  Orb * black4;
-  
+  Player player; 
+  OrbLogic *logic;
   Map map;
   Chronometer<Time> chrono;
   float m_time_passed;
+  int highscore;
 };
 
 class Instructions_State : public Widget_Gamestate {

@@ -7,11 +7,6 @@ OrbContainer::OrbContainer(Zeni::Point2f position_) {
 
 OrbContainer::~OrbContainer() {
 	
-	//if(orbs.size() > 0) {
-		//for(int i = 0; i < orbs.size(); i++) {
-			//delete orbs[i];
-		//}
-	//}
 }
 
 int OrbContainer::GetSize() {
@@ -19,7 +14,6 @@ int OrbContainer::GetSize() {
 }
 
 void OrbContainer::AddOrb(Orb * orb_) {
-	
 	orbs.push_back(orb_);
 }
 
@@ -42,6 +36,14 @@ Orb* OrbContainer::ReleaseOrb() {
 		return NULL;
 }
 
+void OrbContainer::ReleaseAll() {
+	
+	for(int i = 0; i < orbs.size(); i++) {
+		ReleaseOrb();
+	}
+	orbs.clear();
+}
+
 void OrbContainer::Update(Zeni::Point2f position_) {
 
 	position = position_;
@@ -50,8 +52,6 @@ void OrbContainer::Update(Zeni::Point2f position_) {
 		slots[i].x = position.x + 8;
 		slots[i].y = position.y - i*8 - 10;
 	}
-	
-	
 }
 
 void OrbContainer::Render() {

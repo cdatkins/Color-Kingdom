@@ -124,6 +124,7 @@ void Map::Collision(Player &player) {
 
 void Map::Collision(Orb &orb) {
 
+	if(orb.active) {
 	for(int i = 0; i < tiles.size(); i++) {
 		
 		if(orb.current->Intersects(*tiles[i]->rect)) {
@@ -148,5 +149,6 @@ void Map::Collision(Orb &orb) {
 			}
 			
 		}
+	}
 	}
 }

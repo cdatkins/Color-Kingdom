@@ -2,6 +2,10 @@
 #include <time.h>
 #include <stdlib.h>
 
+Orb::Orb() {
+
+}
+
 Orb::Orb(Color color_, Zeni::Point2f pos_) 
 	: velocity(0.0f,0.0f), size(16.0f,16.0f), state(START), active(true), speed(150.0f)
 {

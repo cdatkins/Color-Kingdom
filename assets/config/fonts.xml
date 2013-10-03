@@ -43,10 +43,10 @@ Only TrueType fonts are supported.
   </system_36_800x600>
   <title>
     <filepath>fonts/FORGOTTE.TTF</filepath>
-    <height>92</height>
+    <height>24</height>
     <virtual_screen>
-      <width>800</width>
-      <height>600</height>
+      <width>854</width>
+      <height>480</height>
     </virtual_screen>
   </title>
 </Fonts>

@@ -6,11 +6,14 @@
 class Player {
 private:
 	
+	
 	float speed, jump_speed, gravity;
 	Zeni::Point2f position;
+	Zeni::Point2f respawn_position;
 	Zeni::Vector2f size;
 	Zeni::Point2f velocity;
 	OrbContainer orbcontainer;
+	Zeni::Chronometer<Zeni::Time> respawn_timer;
 	
 public:
 	bool move_left, move_right, jump, activate_gravity, release_orb;
@@ -18,6 +21,10 @@ public:
 	Zeni::Point2f tile_id;
 	Orb::Color tile_color;
 	int num_lives;
+	int score;
+	bool active;
+	enum State {STAND, LEFT, RIGHT, JUMPL, JUMPR};
+	State state;
 
 	Player();
 	~Player();
@@ -26,7 +33,8 @@ public:
 	void Move(float time_step);
 	void Update(float time_step);
 	void Collision(Orb *orb);
-
+	void Respawn();
+	
 	Zeni::Point2f GetPosition();
 	Zeni::Point2f GetVelocity();
 	Zeni::Vector2f GetSize();
