@@ -19,25 +19,7 @@
 /lsbappchk_full.txt
 
 *~
-*.bak
-*.dblite
-*.dll
-*.DS_Store
-*.dylib
 
-*.exp
-*.idb
-*.ilk
-*.layout
-*.lib
-*.o
-*.opensdf
-*.os
-*.pdb
-*.save
-*.sdf
-*.so
-*.suo
 
 !/jni/external/bin/*/*.dll
 !/jni/external/lib/*/*.lib
