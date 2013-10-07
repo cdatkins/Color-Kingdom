@@ -1,0 +1,35 @@
+﻿Build started 9/6/2013 2:07:02 PM.
+     1>Project "C:\Users\ChrisA\Desktop\zenilib_0.5.2.0\zenilib\build\vs2010\game.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "obj\x32\Debug\game.unsuccessfulbuild".
+       PreBuildEvent:
+         xcopy ..\..\dev\pc_ ..\.. /E /Y
+         xcopy ..\..\jni\external\bin\x32 ..\..\bin\d32 /E /Y
+         :VCEnd
+         ..\..\dev\pc_\Info.plist
+         ..\..\dev\pc_\Info_d.plist
+         ..\..\dev\pc_\assets\icons\icon.png
+         ..\..\dev\pc_\assets\sfx\104469__dkmedic__world.ogg
+         ..\..\dev\pc_\Resources\Credits.rtf
+         ..\..\dev\pc_\Resources\zenilib.icns
+         6 File(s) copied
+         ..\..\jni\external\bin\x32\msvcp100.dll
+         ..\..\jni\external\bin\x32\msvcp110.dll
+         ..\..\jni\external\bin\x32\msvcr100.dll
+         ..\..\jni\external\bin\x32\msvcr110.dll
+         ..\..\jni\external\bin\x32\soft_oal.dll
+         ..\..\jni\external\bin\x32\vccorlib110.dll
+         6 File(s) copied
+       ClCompile:
+         All outputs are up-to-date.
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\bin\d32\game.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\..\bin\d32 glu32.lib opengl32.lib local_SDLmain_d.lib zeni_rest_d.lib zeni_graphics_d.lib zeni_net_d.lib zeni_core_d.lib zeni_audio_d.lib zeni_d.lib local_GLEW_d.lib local_SDL_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"obj\x32\Debug\game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\ChrisA\Desktop\zenilib_0.5.2.0\zenilib\bin\d32\game.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\bin\d32\game.lib" /MACHINE:X86 obj\x32\Debug\game.exe.embed.manifest.res
+         obj\x32\Debug\bootstrap.obj
+     1>LINK : fatal error LNK1123: failure during conversion to COFF: file invalid or corrupt
+     1>Done Building Project "C:\Users\ChrisA\Desktop\zenilib_0.5.2.0\zenilib\build\vs2010\game.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.38

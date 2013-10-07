@@ -6,9 +6,8 @@
 /Info.plist
 /Info_d.plist
 
-/bin/
-/build/
-/lib/
+
+
 
 /game_d.app/
 /game.app/
@@ -25,7 +24,7 @@
 *.dll
 *.DS_Store
 *.dylib
-*.exe
+
 *.exp
 *.idb
 *.ilk
