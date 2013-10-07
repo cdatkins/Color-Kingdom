@@ -49,4 +49,12 @@ Only TrueType fonts are supported.
       <height>480</height>
     </virtual_screen>
   </title>
+  <title_2>
+    <filepath>fonts/MotorwerkOblique.ttf</filepath>
+    <height>72</height>
+    <virtual_screen>
+      <width>854</width>
+      <height>480</height>
+    </virtual_screen>
+  </title_2>
 </Fonts>

@@ -74,7 +74,6 @@ void Map::RenderMap(Zeni::Video &video) {
 
 void Map::Collision(Player &player) {
 	
-	//player.activate_gravity = true;
 	for(int i = 0; i < tiles.size(); i++) {
 		
 		if(player.current->Intersects(*tiles[i]->rect)) {
@@ -125,30 +124,48 @@ void Map::Collision(Player &player) {
 void Map::Collision(Orb &orb) {
 
 	if(orb.active) {
-	for(int i = 0; i < tiles.size(); i++) {
+		for(int i = 0; i < tiles.size(); i++) {
 		
-		if(orb.current->Intersects(*tiles[i]->rect)) {
+			if(orb.current->Intersects(*tiles[i]->rect)) {
 			
-			Rect tile_rect = *tiles[i]->rect;
+				Rect tile_rect = *tiles[i]->rect;
 			
-			if(orb.current->GetBottom() >= tile_rect.GetTop() 
-				&& orb.previous->GetBottom() <= tile_rect.GetTop()) { //Orb intersected from the top of the tile
-					orb.OnCollision(Rect::TOP);
-			}
-			else if(orb.current->GetTop() <= tile_rect.GetBottom() 
-				&& orb.previous->GetTop() >= tile_rect.GetBottom()) { //Orb intersected from the bottom of the tile
-					orb.OnCollision(Rect::BOTTOM);
-			}
-			else if(orb.current->GetRight() >= tile_rect.GetLeft()
-				&& orb.previous->GetRight() <= tile_rect.GetLeft()) { //Orb intersected from the left
-					orb.OnCollision(Rect::LEFT);
-			}
-			else if(orb.current->GetLeft() <= tile_rect.GetRight()
-				&& orb.previous->GetLeft() >= tile_rect.GetRight()) { //Orb intersected from the right
-					orb.OnCollision(Rect::RIGHT);	
-			}
+				if(orb.current->GetBottom() >= tile_rect.GetTop() 
+					&& orb.previous->GetBottom() <= tile_rect.GetTop()) { //Orb intersected from the top of the tile
+						orb.OnCollision(Rect::TOP);
+				}
+				else if(orb.current->GetTop() <= tile_rect.GetBottom() 
+					&& orb.previous->GetTop() >= tile_rect.GetBottom()) { //Orb intersected from the bottom of the tile
+						orb.OnCollision(Rect::BOTTOM);
+				}
+				else if(orb.current->GetRight() >= tile_rect.GetLeft()
+					&& orb.previous->GetRight() <= tile_rect.GetLeft()) { //Orb intersected from the left
+						orb.OnCollision(Rect::LEFT);
+				}
+				else if(orb.current->GetLeft() <= tile_rect.GetRight()
+					&& orb.previous->GetLeft() >= tile_rect.GetRight()) { //Orb intersected from the right
+						orb.OnCollision(Rect::RIGHT);	
+				}
 			
+			}
 		}
 	}
+}
+
+void Map::Collision(Item& item) {
+	if(item.active && item.state == Item::COLLECTABLE) {
+		for(int i = 0; i < tiles.size(); i++) {
+		
+			if(item.current->Intersects(*tiles[i]->rect)) {
+			
+				Rect tile_rect = *tiles[i]->rect;
+			
+				if(item.current->GetBottom() >= tile_rect.GetTop() 
+					&& item.previous->GetBottom() <= tile_rect.GetTop()) { //Orb intersected from the top of the tile
+						item.activate_gravity = false;
+						item.current->SetPosition(item.current->GetX(), tile_rect.GetTop() - 36);
+				}
+			}
+		}
 	}
 }

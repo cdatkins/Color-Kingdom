@@ -25,6 +25,13 @@ Orb::Color OrbContainer::GetFrontColor() {
 		return Orb::NONE;
 }
 
+void OrbContainer::ChangeAll(Orb::Color color_) {
+
+	for(int i =0; i < orbs.size(); i++) {
+		orbs[i]->color = color_;
+	}
+}
+
 Orb* OrbContainer::ReleaseOrb() {
 	
 	if(orbs.size() > 0) {
@@ -62,7 +69,6 @@ void OrbContainer::Render() {
 	}
 	
 	for(int i = 0 ; i < 5 - orbs.size(); i++) {
-
 		Zeni::render_image("clear_slot", slots[4 - i], slots[4 - i] + Zeni::Vector2f(16.0f,8.0f));
 	}
 }

@@ -4,7 +4,7 @@
 #include <vector>
 #include "player.h"
 #include "orb.h"
-
+#include "item.h"
 struct Tile {
 	//enum State { SOLID, PASSIVE };
 	Zeni::Point2f position;
@@ -28,4 +28,5 @@ public:
 	Tile* GetTile(Zeni::Point2f pos); //Returns a single from the map
 	void Collision(Player& player);
 	void Collision(Orb & orb);
+	void Collision(Item& item);
 };

@@ -4,8 +4,11 @@ Player::Player()
 	:position(427.0f,240.0f), velocity(0.0f,0.0f), size(32.0f,64.0f), speed(250.0f),
 	jump_speed(550.0f), move_left(false), move_right(false), activate_gravity(true),
 	gravity(700.0f), jump(false), orbcontainer(position), num_lives(3), release_orb(false),
-	active(true), state(STAND), score(0)
+	active(true), state(STAND), score(0), curr_item(NULL)
 {
+	multiplier[0] = 1;
+	multiplier[1] = 1;
+	multiplier[2] = 1;
 	respawn_position = position;
 	current = new Rect(position.x,position.y,size.i,size.j);
 	previous = new Rect(position.x,position.y,size.i,size.j);
@@ -44,9 +47,9 @@ void Player::Render() {
 void Player::Move(float time_step) {
 	
 	if(jump && !activate_gravity) {
-
 		velocity.y = -jump_speed;
 		activate_gravity = true;
+		Zeni::play_sound("jump",1.0f,.25f);
 	}
 	else if(!jump) { //allow player to short jump or jump higher when when button is held
 		if(velocity.y  < -225.0f) 
@@ -68,7 +71,8 @@ void Player::Move(float time_step) {
 			state = JUMPR;
 	}
 	else if(!activate_gravity) {
-		velocity.x = 0;state = STAND;
+		velocity.x = 0;
+		state = STAND;
 	}
 
 	if(activate_gravity) {
@@ -96,6 +100,22 @@ void Player::Update(float time_step) {
 		Move(time_step);
 		orbcontainer.Update(position);
 		
+		/*
+		if(curr_item != NULL) {	
+			
+			if(curr_item->done) {
+				//curr_item->state = Item::COLLECTABLE;
+				//curr_item-> active = false;
+				if(curr_item->type == Item::MULTI) {
+					multiplier[0] = 1;
+					multiplier[1] = 1;
+					multiplier[2] = 1;
+				}
+				curr_item = NULL;
+			}
+		}*/
+
+		
 		//Releasing the Orb into the buckets
 		if(release_orb && tile_color == orbcontainer.GetFrontColor()
 			&& !activate_gravity) {
@@ -106,16 +126,17 @@ void Player::Update(float time_step) {
 			
 			switch(orb->color) {
 			case Orb::BLUE:
-				score += 50;
+				score += 50*multiplier[2];
 				break;
 			case Orb::GREEN:
-				score += 30;
+				score += 30*multiplier[1];
 				break;
 			case Orb::RED:
-				score += 10;
+				score += 10*multiplier[0];
+				break;
 			}
 			release_orb = false;
-
+			Zeni::play_sound("score");
 		}
 		else {
 			release_orb = false;
@@ -149,13 +170,13 @@ void Player::Respawn() {
 }
 
 void Player::Collision(Orb * orb) {
-	if(active && !respawn_timer.is_running()) {
+	if(active) {
 		if(orb->active && current->Intersects(*orb->current)) {
 			if(orb->color != Orb::BLACK && orbcontainer.GetSize() < 5) {
 				orb->state = Orb::CAPTURED;
 				orbcontainer.AddOrb(orb);
 			}
-			else if(orb->color == Orb::BLACK) {
+			else if(orb->color == Orb::BLACK && !respawn_timer.is_running()) {
 				num_lives --;
 				active = false;
 				orbcontainer.ReleaseAll();
@@ -164,6 +185,49 @@ void Player::Collision(Orb * orb) {
 		}
 	}
 }
+
+void Player::Collision(Item *item) {
+	if(active && !respawn_timer.is_running()) {
+		
+		if(item->active && item->state == Item::COLLECTABLE) {
+			
+			if(current->Intersects(*item->current)) {
+				curr_item = item;
+				item->life_time.stop();
+				item->state = Item::CAPUTRED;
+				
+				if(item->type == Item::MULTI) {
+					item->bonus_time.start();
+					switch(item->color) {
+					case Item::BLUE:
+						multiplier[2] = 2;
+						break;
+					case Item::GREEN:
+						multiplier[1] = 2;
+						break;
+					case Item::RED:
+						multiplier[0] = 2;
+						break;
+					}
+				}
+				else if(item->type == Item::CHANGE) {
+					switch(item->color) {
+					case Item::BLUE:
+						orbcontainer.ChangeAll(Orb::BLUE);
+						break;
+					case Item::GREEN:
+						orbcontainer.ChangeAll(Orb::GREEN);
+						break;
+					case Item::RED:
+						orbcontainer.ChangeAll(Orb::RED);
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
 
 Zeni::Point2f Player::GetPosition() {
 	return position;

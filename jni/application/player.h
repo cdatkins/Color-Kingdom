@@ -2,6 +2,7 @@
 #include "zenilib.h"
 #include "rect.h"
 #include "orb_container.h"
+#include "item.h"
 
 class Player {
 private:
@@ -22,10 +23,11 @@ public:
 	Orb::Color tile_color;
 	int num_lives;
 	int score;
+	int multiplier[3];
 	bool active;
 	enum State {STAND, LEFT, RIGHT, JUMPL, JUMPR};
 	State state;
-
+	Item *curr_item;
 	Player();
 	~Player();
 	
@@ -33,6 +35,7 @@ public:
 	void Move(float time_step);
 	void Update(float time_step);
 	void Collision(Orb *orb);
+	void Collision(Item *item);
 	void Respawn();
 	
 	Zeni::Point2f GetPosition();

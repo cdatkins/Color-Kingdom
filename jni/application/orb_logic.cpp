@@ -8,7 +8,7 @@ OrbLogic::OrbLogic() {
 	
 	logic_timer.start();
 	difficulty_timer.start();
-	black_orbs = 5;
+	black_orbs = 3;
 }
 
 OrbLogic::~OrbLogic() {
@@ -74,8 +74,8 @@ void OrbLogic::Update(float time_step) {
 	}
 	
 	//Updated difficulty as time goes on
-	if( difficulty_timer.seconds() >= 120) {
-		black_orbs++;
+	if( difficulty_timer.seconds() >= 100) {
+		black_orbs+=2;
 		difficulty_timer.reset();
 	}
 
@@ -128,6 +128,7 @@ void OrbLogic::Collision(Player& player) {
 void OrbLogic::Collision(Map& map) {
 
 	for(int i = 0; i < active_orbs.size(); i++) {
+		
 		map.Collision(*active_orbs[i]);
 	}
 

@@ -28,4 +28,13 @@ HOWTO:  To convert between types, or to downmix to mono,
   <hello_world>
     <filepath>sfx/104469__dkmedic__world</filepath>
   </hello_world>
+  <bg_music>
+    <filepath>sfx/2ndBallad</filepath>
+  </bg_music>
+  <jump>
+    <filepath>sfx/jump_11</filepath>
+  </jump>
+  <score>
+    <filepath>sfx/score</filepath>
+  </score>
 </Sounds>

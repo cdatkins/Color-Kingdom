@@ -37,6 +37,36 @@ The following things are unsupported:
   4. Anything other than 8 bits per channel
 -->
 <Textures>
+  <end>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/end_bg.png</filepath>
+    <tile>0</tile>
+  </end>
+  <logo>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/title.png</filepath>
+    <tile>0</tile>
+  </logo>
+  <background>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/space-1.png</filepath>
+    <tile>0</tile>
+  </background>
+  <x2red>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/x2_red.png</filepath>
+    <tile>0</tile>
+  </x2red>
+  <x2green>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/x2_green.png</filepath>
+    <tile>0</tile>
+  </x2green>
+  <x2blue>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/x2_red.png</filepath>
+    <tile>0</tile>
+  </x2blue>
   <life>
     <is_sprite>0</is_sprite>
     <filepath>textures/life.png</filepath>

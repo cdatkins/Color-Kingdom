@@ -14,6 +14,7 @@ public:
 	~OrbContainer();
 	int GetSize();
 	void AddOrb(Orb * orb_);
+	void ChangeAll(Orb::Color color);
 	Orb::Color GetFrontColor();
 	Orb* ReleaseOrb();
 	void ReleaseAll();
