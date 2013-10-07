@@ -67,6 +67,21 @@ The following things are unsupported:
     <filepath>textures/x2_red.png</filepath>
     <tile>0</tile>
   </x2blue>
+  <starblue>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/star_blue.png</filepath>
+    <tile>0</tile>
+  </starblue>
+   <starred>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/star_red.png</filepath>
+    <tile>0</tile>
+  </starred>
+   <stargreen>
+    <is_sprite>0</is_sprite>
+    <filepath>textures/star_green.png</filepath>
+    <tile>0</tile>
+  </stargreen>
   <life>
     <is_sprite>0</is_sprite>
     <filepath>textures/life.png</filepath>

@@ -100,20 +100,18 @@ void Player::Update(float time_step) {
 		Move(time_step);
 		orbcontainer.Update(position);
 		
-		/*
+		
 		if(curr_item != NULL) {	
 			
 			if(curr_item->done) {
-				//curr_item->state = Item::COLLECTABLE;
-				//curr_item-> active = false;
-				if(curr_item->type == Item::MULTI) {
-					multiplier[0] = 1;
-					multiplier[1] = 1;
-					multiplier[2] = 1;
-				}
 				curr_item = NULL;
 			}
-		}*/
+		}
+		else {
+			multiplier[0] = 1;
+			multiplier[1] = 1;
+			multiplier[2] = 1;
+		}
 
 		
 		//Releasing the Orb into the buckets

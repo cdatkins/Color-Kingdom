@@ -1,4 +1,4 @@
-﻿Build started 10/6/2013 8:11:35 PM.
+﻿Build started 10/7/2013 3:46:48 AM.
      1>Project "C:\Users\ChrisA\Desktop\A2_ColorBlitz_AtkinsChristopher\build\vs2012\game.vcxproj" on node 2 (Build target(s)).
      1>PreBuildEvent:
          xcopy ..\..\dev\pc_ ..\.. /E /Y
@@ -36,9 +36,9 @@
      1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(80): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
      1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(81): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
      1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(82): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(242): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(245): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(248): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(258): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(261): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\chrisa\desktop\a2_colorblitz_atkinschristopher\jni\application\bootstrap.cpp(264): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\bin\d32\game.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\..\bin\d32 glu32.lib opengl32.lib local_SDLmain_d.lib zeni_rest_d.lib zeni_graphics_d.lib zeni_net_d.lib zeni_core_d.lib zeni_audio_d.lib zeni_d.lib local_GLEW_d.lib local_SDL_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\bin\d32\game.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\bin\d32\game.lib" /MACHINE:X86 obj\x32\Debug\bootstrap.obj
          obj\x32\Debug\item.obj
@@ -53,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:08.11
+Time Elapsed 00:00:06.70

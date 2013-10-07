@@ -69,8 +69,19 @@ void Item::Render() {
 			break;
 		}
 		break;
+	case CHANGE:
+		switch(color) {
+		case RED:
+			filename = "starred";
+			break;
+		case BLUE:
+			filename = "starblue";
+			break;
+		case GREEN:
+			filename = "stargreen";
+			break;
+		}
 	}
-
 	if(active && state == COLLECTABLE) {
 		Zeni::render_image(filename, position, position+size);
 	}

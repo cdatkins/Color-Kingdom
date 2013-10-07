@@ -143,11 +143,10 @@ void perform_logic() {
 	logic->Collision(map);
 	logic->Collision(player);
 	map.Collision(player);
-	player.Update(time_step);
-	logic->Update(time_step);
+	
 
 	//Item generation
-	/*if(item != NULL) {
+	if(item != NULL) {
 		map.Collision(*item);
 		player.Collision(item);
 		item->Update(time_step);
@@ -158,35 +157,52 @@ void perform_logic() {
 			item_timer.start();
 		}
 	}
-	else if( item_timer.seconds() >= 10){
+	else if( item_timer.seconds() >= 5){
 		
 		switch(random.rand_lt(2)) {
 		case 0:
-			if(random.rand_lt(5) == 1) {
+			if(random.rand_lt(2) == 1) {
 				switch (random.rand_lt(3)) {
 				case 0:
 					item = new Item(Item::RED, Item::MULTI);
 					item_timer.stop();
-					item_timer.reset();
 					break;
 				case 1:
 					item = new Item(Item::GREEN, Item::MULTI);
 					item_timer.stop();
-					item_timer.reset();
 					break;
 				case 2:
 					item = new Item(Item::BLUE, Item::MULTI);
 					item_timer.stop();
-					item_timer.reset();
 					break;
 				}
 			}
+			
+			item_timer.reset();
 			break;
 		case 1:
+			if(random.rand_lt(2) == 1) {
+				switch (random.rand_lt(3)) {
+				case 0:
+					item = new Item(Item::RED, Item::CHANGE);
+					item_timer.stop();
+					break;
+				case 1:
+					item = new Item(Item::GREEN, Item::CHANGE);
+					item_timer.stop();
+					break;
+				case 2:
+					item = new Item(Item::BLUE, Item::CHANGE);
+					item_timer.stop();
+					break;
+				}
+			}
+			item_timer.reset();
 			break;
 		}
-	}*/
-	
+	}
+	player.Update(time_step);
+	logic->Update(time_step);
 	if(player.score > highscore) 
 		highscore = player.score;
 
